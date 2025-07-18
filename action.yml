@@ -1,0 +1,31 @@
+name: 'setup vppcfg action'
+description: 'Setup vppcfg'
+inputs:
+  vppcfg-ref:
+    description: "Ref of vppcfg to install"
+    required: false
+    default: "main"
+runs:
+  using: "composite"
+  steps:
+    - name: Install vppcfg
+      shell: bash
+      run: |-
+        origdir="$(pwd)"
+        git clone https://git.ipng.ch/ipng/vppcfg.git /tmp/vppcfg
+        cd /tmp/vppcfg
+        git checkout $VPPCFGREF
+
+        python3 -m venv .venv
+        source .venv/bin/activate
+        make install-deps
+        make test
+        make build
+        deactivate
+        make install
+        vppcfg -h
+        
+        cd "$origdir"
+        rm -rf /tmp/vppcfg
+      env:
+        VPPCFGREF: ${{ inputs.vppcfg-ref }}
