@@ -3,6 +3,7 @@ name: Smoketest
 on:
   workflow_dispatch:
   push:
+  pull_request:
 
 permissions: read-all
 
