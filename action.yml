@@ -36,6 +36,6 @@ runs:
       shell: bash
       if: "inputs.install-source == 'pypi'"
       run: |-
-        pip instal vppcfg==$VPPCFGVER
+        pip install vppcfg==$VPPCFGVER
       env:
         VPPCFGVER: ${{ inputs.vppcfg-ref }}
