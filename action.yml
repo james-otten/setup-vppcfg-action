@@ -5,6 +5,10 @@ inputs:
     description: "Ref of vppcfg to install"
     required: false
     default: "main"
+  vppcfg-ver:
+    description: "Version number to install from pypi"
+    required: false
+    default: "1.1.0"
   install-source:
     description: "Install from 'pypi' or 'source'"
     required: true
@@ -38,4 +42,4 @@ runs:
       run: |-
         pip install vppcfg==$VPPCFGVER
       env:
-        VPPCFGVER: ${{ inputs.vppcfg-ref }}
+        VPPCFGVER: ${{ inputs.vppcfg-ver }}
