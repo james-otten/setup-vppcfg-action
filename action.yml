@@ -5,17 +5,19 @@ inputs:
     description: "Ref of vppcfg to install"
     required: false
     default: "main"
+  install-source:
+    description: "Install from 'pypi' or 'source'"
+    required: true
+    default: "pypi"
 runs:
   using: "composite"
   steps:
-    - name: Install vppcfg
+    - name: Install vppcfg from source
       shell: bash
+      if: "inputs.install-source == 'source'"
       run: |-
         origdir="$(pwd)"
-        git clone https://git.ipng.ch/ipng/vppcfg.git /tmp/vppcfg
-        cd /tmp/vppcfg
-        git checkout $VPPCFGREF
-
+        pip instal vppcfg==$VPPCFGREF
         python3 -m venv .venv
         source .venv/bin/activate
         make install-deps
@@ -29,3 +31,11 @@ runs:
         rm -rf /tmp/vppcfg
       env:
         VPPCFGREF: ${{ inputs.vppcfg-ref }}
+
+    - name: Install vppcfg from pypi
+      shell: bash
+      if: "inputs.install-source == 'pypi'"
+      run: |-
+        pip instal vppcfg==$VPPCFGVER
+      env:
+        VPPCFGVER: ${{ inputs.vppcfg-ref }}
